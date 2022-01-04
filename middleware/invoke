@@ -3,6 +3,19 @@
 #
 # jupyter tool
 #
-/usr/bin/invoke_app "$@" -t hubtoolshortname \
-                         -C "start_jupyter -t -T @tool hubtoolshortname.ipynb" \
+
+toolDirectory=$(dirname $(dirname $0))
+revision=$(basename $(realpath ${toolDirectory}))
+userDirectory=$HOME/notebooks/MolSSI/${revision}
+
+if [ ! -d ${userDirectory} ]; then
+    mkdir -p $userDirectory
+    cp -r $toolDirectory/data $userDirectory/data    
+fi
+
+# Go to user directory
+cd $userDirectory
+
+# Start Jupyter
+/usr/bin/invoke_app "$@" -C "start_jupyter" \
                          -u anaconda-6
